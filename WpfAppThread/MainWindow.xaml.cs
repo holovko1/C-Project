@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Domain.Entities;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,6 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfAppThread.Data;
+using Faker;
 
 namespace WpfAppThread
 {
@@ -30,6 +33,16 @@ namespace WpfAppThread
             thread = new Thread(() => 
                 InsertItems(count));
             thread.Start();
+            using (DatabaseContext context = new DatabaseContext())
+            {
+                UserEntity user = new UserEntity();
+                user.FirstName = Faker.Name.First();
+                user.LastName = Faker.Name.Last();
+                user.Email = Faker.Internet.Email();
+                user.Phone = Faker.Phone.Number().ToString();
+                //context.Add(user);
+                //context.SaveChanges();
+            }
         }
 
         private void InsertItems(double count)
@@ -61,6 +74,11 @@ namespace WpfAppThread
             btnPause.Content = isPaused ? "Продовжити" : "Пауза";
         }
 
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            isClosing = true;
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
@@ -69,11 +87,6 @@ namespace WpfAppThread
             {
                 thread.Join();
             }
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            isClosing = true;
         }
     }
 }

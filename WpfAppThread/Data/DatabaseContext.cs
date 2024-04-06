@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace WpfAppThread.Data
 {
     public class DatabaseContext : DbContext
     {
+        public DbSet<UserEntity> Users { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("DataSource=app.db;");
