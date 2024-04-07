@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
 using System;
@@ -15,8 +15,8 @@ namespace WpfAppThread.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("DataSource=app.db;");
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder
+                .UseSqlite("DataSource=puma.sqlite;");
         }
     }
 }
